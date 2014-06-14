@@ -19,7 +19,7 @@ Product features:
 
 How to build the project: 
 
-1. Download all sources (include AdvThreadPool from https://github.com/cynicanonimus/AdvThreadPool !)
+1. Download all sources
 2. Launch QtCreator, open file AdvThreadPool.pro. 
 3. Launch QtCreator, open file pdb/pdb.pro. Make full rebuild. 
 4. Launch QtCreator, open file PdbSettings/ PdbSettings.pro Make full rebuild. 
