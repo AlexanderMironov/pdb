@@ -1,0 +1,107 @@
+list of changes in the project pdb. 
+
+Date 		CommitID		Changes
+
+13.03.2013	13.03.2013-01		rename column 'current' in the table 'root_tbl'.
+					Made is because 'current' is reserved in Oracle.
+					Also made appropriate changes in the c++ code and script.
+					"alter table root_tbl change current current_active tinyint(1);"
+--------------------------------------------------------------------------------------------------------
+14.03.2013	14.03.2013-01		Add "expand/collapse all" functionality to the tree
+                14.03.2013-02           Fix wrong SQL-query
+		14.03.2013-03		Fix Problem with the NULL pointer crash
+		14.03.2013-04		Increase process of menu status checking
+--------------------------------------------------------------------------------------------------------
+16.03.2013      16.03.2013-1		Implement more detailed errors log, make editor toolbox (not finished yet)
+--------------------------------------------------------------------------------------------------------
+17.03.2013      17.03.2013-1 		Implement print preview for node description, group signal/slots in functions (not tested yet!)
+17.03.2013      17.03.2013-2		Fix availability of menu items when database changed, implement export node description to the file
+17.03.2013      17.03.2013-3            Implement load node descriptor from file, 'undo' and 'redo', fix some errors.
+17.03.2013      17.03.2013-4		bugfix ('+' instead of '++')
+--------------------------------------------------------------------------------------------------------
+18.03.2013      18.03.2013-1		Implement change font and font size for node description
+18.03.2013      18.03.2013-2		Implement print, export to pdf, make bold italic and underline for node description. 
+--------------------------------------------------------------------------------------------------------
+19.03.2013      19.03.2013-1		Add items to the editor menu
+--------------------------------------------------------------------------------------------------------
+20.03.2013      20.03.2013-1		Implement change case of the text in the editor
+--------------------------------------------------------------------------------------------------------
+22.03.2013      22.03.2013-1            Implement fore-and background text of editor elements (has bug with backgound color visualisation)
+--------------------------------------------------------------------------------------------------------
+23.03.2013      23.03.2013-1	        Fix the bug with the slow attachments status detection. 
+--------------------------------------------------------------------------------------------------------
+25.03.2013      25.03.2013-1            Implement insert table function
+--------------------------------------------------------------------------------------------------------
+26.03.2013	26.03.2013-1		Implement insert/remove row/columns same as merge cells for table
+--------------------------------------------------------------------------------------------------------
+28.03.2013      28.03.2013-1		Modify pdb/dbdescription.xml for SqlLite dababase
+28.03.2013      28.03.2013-2            Implement split table cells and insert link to image
+--------------------------------------------------------------------------------------------------------
+30.03.2013      30.03.2013-1		Implement export node (subtree) to the HDD
+30.03.2013      30.03.2013-2            Update dbdescription.xml, add support for Oracle 
+30.03.2013      30.03.2013-3            Implement user-defined colors for the nodes. WARNING: table node_tbl changed!!!!
+--------------------------------------------------------------------------------------------------------
+03.04.2013	03.04.2013-1		Implement possibility to change encrypt mode "on fly"
+--------------------------------------------------------------------------------------------------------
+04.04.2013	04.04.2013-1		Implement lock screen 
+--------------------------------------------------------------------------------------------------------
+06.04.2013	06.04.2013-1		Make new database table (icons_tbl)
+06.04.2013      06.04.2013-2		Add some new classes for icon support (not finished yet)
+--------------------------------------------------------------------------------------------------------
+08.04.2013	08.04.2013-1		Implement load icon into DB from file in Icon dialog           
+--------------------------------------------------------------------------------------------------------
+10.04.2013      10.04.2013-1		Implement manage icons for nodes (quick search not finished yet)
+10.04.2013      10.04.2013-2            Implement manage icons for nodes (finished compeletely)
+--------------------------------------------------------------------------------------------------------
+11.04.2013      11.04.2013-1 		make some changes in the icons management
+11.04.2013      11.04.2013-2		Fix error with the predefined icon path
+--------------------------------------------------------------------------------------------------------
+12.04.2013      12.04.2013-1            Fix error with the application style in settings
+--------------------------------------------------------------------------------------------------------
+13.04.2013      13.04.2013-1		Implement size of the icons in the settings and in the main app
+--------------------------------------------------------------------------------------------------------
+14.04.2013      14.04.2013-1		Implement quick filtering in the icon dialog
+--------------------------------------------------------------------------------------------------------
+20.04.2013      20.04.2013-1		Add text of the licence to the every file
+--------------------------------------------------------------------------------------------------------
+21.04.2013      21.04.2013-1		Modify README.md. Prepare to make changes in the PDBSettings
+--------------------------------------------------------------------------------------------------------
+22.04.2013      22.04.2013-1		Implement own threadpool AdvThreadPool instead of standard, fix some small bugs.
+22.04.2013      22.04.2013-2		Implement log-window in the application	
+--------------------------------------------------------------------------------------------------------
+23.04.2013      23.04.2013-1            Fix db clean error on exit
+--------------------------------------------------------------------------------------------------------
+24.04.2013	24.04.2013-1		Make switcher on/off for Log-window
+--------------------------------------------------------------------------------------------------------
+25.04.2013      25.04.2013-1 		Intermediate update. Preparing for direct scan functionality.
+--------------------------------------------------------------------------------------------------------
+26.04.2013      26.04.2013-1            Intermediate update. Preparing for direct scan functionality.
+--------------------------------------------------------------------------------------------------------
+30.04.2013      30.04.2013-1		Fix syntax error in MainWindow.cpp
+30.04.2013      30.04.2013-2		Intermediate update. Preparing for direct scan functionality.
+30.04.2013      30.04.2013-3		Fix problem with toolbars control menu (right button on toolbars)
+30.04.2013      30.04.2013-4		Fix problem with non-selected attachment
+30.04.2013      30.04.2013-5		Fix syntax error in MyTable::onCancelAsyncOperations
+30.04.2013      30.04.2013-6 		Add lost icons
+--------------------------------------------------------------------------------------------------------
+01.05.2013	01.05.2013-1 		Set all zoom buttons in the drop-down list on the combobox (scanning), add 
+					proportional/nonproportional resize for the image
+--------------------------------------------------------------------------------------------------------
+02.05.2013	02.05.2013-1		Some changes in cofiguration program. (not fimished yet, intermediate update)
+--------------------------------------------------------------------------------------------------------
+03.05.2013 	03.05.2013-1		Finish scanner settings in cofiguration program.
+--------------------------------------------------------------------------------------------------------
+05.05.2013	05.05.2013-1		Add check correctness of scanner configuration
+05.05.2013      05.05.2013-2		Scan documents implemented in the pdb completely.
+--------------------------------------------------------------------------------------------------------
+07.05.2013      07.05.2013-1		Implement default extension for the scanned image
+--------------------------------------------------------------------------------------------------------
+17.05.2013	17.05.2013-1		Implement Undo and Redo for the scanned images
+--------------------------------------------------------------------------------------------------------
+08.07.2013	08.07.2013-1		Implement new thread pool, make correct exit from application.
+08.07.2013	08.07.2013-2		Fix the problem with cut and paste attachments
+08.07.2013      08.07.2013-3            Use new threadpool
+--------------------------------------------------------------------------------------------------------
+31.07.2013	31.07.2013-1		Make exit buttons unavailable after 1-st click, use new threadpool
+--------------------------------------------------------------------------------------------------------
+01.102013	01.10.2013-1		Make ask password before loading trees.

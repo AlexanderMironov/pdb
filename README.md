@@ -20,7 +20,7 @@ Product features:
 How to build the project: 
 
 1. Download all sources
-2. Launch QtCreator, open file AdvThreadPool.pro. 
+2. Launch QtCreator, open file AdvThreadPool.pro (it is another repo: github.com/AlexanderMironov/AdvThreadPool 
 3. Launch QtCreator, open file pdb/pdb.pro. Make full rebuild. 
 4. Launch QtCreator, open file PdbSettings/ PdbSettings.pro Make full rebuild. 
 5. Copy executable files pdb and PdbSettings and file dbdescription.xml into same directory. 
