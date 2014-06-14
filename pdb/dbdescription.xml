@@ -1,0 +1,346 @@
+<?xml version="1.0"?>
+<!-- Warning!  -->
+<!-- Changing of this file may damage your database. You do it on your own risk! -->
+<databases>
+		<!-- list of mandatory tables in every database -->
+	<mandatory_tables>
+		<table>attachments</table>
+		<table>node_tbl</table>
+		<table>root_tbl</table>
+		<table>service_tbl</table>
+		<table>icons_tbl</table>
+	</mandatory_tables>
+		<!--  -->
+	<database type="MySql">
+		<!-- drive name for main application -->
+		<driver>QMYSQL</driver>
+		<!-- 
+				this request must returns list of existing tables (SQL query or stored procedure) in the form like this: 
+				tablename1
+				tablename2
+				....
+				tablenameN
+		-->
+		<show_tables_request>
+		SHOW TABLES;		
+		</show_tables_request>		
+		<!-- list of executing statement. 'id' means priority of execution -->
+
+		<statement id="0">
+			DROP TABLE IF EXISTS `attachments`;
+		</statement>
+
+		<statement id="10">
+			DROP TABLE IF EXISTS `service_tbl`;
+		</statement>
+
+		<statement id="15">
+			DROP TABLE IF EXISTS `node_tbl`;		
+		</statement>
+
+		<statement id="20">
+			DROP TABLE IF EXISTS `root_tbl`;
+		</statement>
+
+		<statement id="21">
+			DROP TABLE IF EXISTS `icons_tbl`;
+		</statement>
+
+		<statement id="25">
+			CREATE TABLE `service_tbl` (
+			  `id_param` int(11) NOT NULL AUTO_INCREMENT,
+			  `is_already_in_use` tinyint(1) NOT NULL DEFAULT '0',
+			  `password` varchar(255) DEFAULT NULL,
+			  PRIMARY KEY (`id_param`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</statement>
+
+		<statement id="30">
+			CREATE TABLE `root_tbl` (
+			  `id_tree` int(11) NOT NULL AUTO_INCREMENT,
+			  `tree_name` varchar(255) NOT NULL,
+			  `last_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  `active` tinyint(1) NOT NULL DEFAULT '1',
+			  `current_active` tinyint(1) NOT NULL DEFAULT '0',
+			  PRIMARY KEY (`id_tree`),
+			  UNIQUE KEY `tree_name_UNIQUE` (`tree_name`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</statement>
+
+		<statement id="35">
+			CREATE TABLE `node_tbl` (
+			  `id_node` int(11) NOT NULL AUTO_INCREMENT,
+			  `id_parent` int(11) NOT NULL,
+			  `id_tree` int(11) NOT NULL,
+			  `node_name` varchar(255) NOT NULL,
+			  `node_color` varchar(20), 
+			  `node_descriptor` longtext,
+			  `active` tinyint(1) NOT NULL DEFAULT '1',
+			  `expanded` tinyint(1) NOT NULL DEFAULT '0',
+			  `last_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  `id_icon` int(11) NOT NULL DEFAULT '0',
+			  PRIMARY KEY (`id_node`),
+			  KEY `tree_ind` (`id_tree`),
+			  CONSTRAINT `node_tbl_ibfk_1` FOREIGN KEY (`id_tree`) REFERENCES `root_tbl` (`id_tree`) ON DELETE CASCADE
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</statement>
+
+		<statement id="40">
+			CREATE TABLE `attachments` (
+			  `id_attach` int(11) NOT NULL AUTO_INCREMENT,
+			  `id_parent` int(11) NOT NULL,
+			  `attach_name` varchar(255) NOT NULL,
+			  `attach_size` int(11) NOT NULL DEFAULT '1',
+			  `active` tinyint(1) NOT NULL DEFAULT '1',
+			  `crypted` tinyint(1) NOT NULL DEFAULT '0',
+			  `locked` tinyint(1) NOT NULL DEFAULT '0',
+			  `is_binary` tinyint(1) NOT NULL,
+			  `last_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  `attach` longblob NOT NULL,
+			  PRIMARY KEY (`id_attach`),
+			  KEY `attach_ind` (`id_parent`),
+			  CONSTRAINT `attachments_ibfk_1` FOREIGN KEY (`id_parent`) REFERENCES `node_tbl` (`id_node`) ON DELETE CASCADE
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</statement>
+
+		<statement id="45">
+			CREATE TABLE `icons_tbl` (
+			  `id_icon` int(11) NOT NULL AUTO_INCREMENT,
+			  `icon_name` varchar(255) NOT NULL,
+			  `icon_hash` varchar(255) NOT NULL,
+			  `icon_body` longblob NOT NULL,
+			  PRIMARY KEY (`id_icon`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</statement>
+
+ 	</database>
+	<database type="Oracle">
+		<!-- drive name for main application -->
+		<driver>QOCI</driver>
+		<!-- list of executing statement. 'id' means priority of execution -->
+		<show_tables_request>
+		select TABLE_NAME from USER_TABLES;		
+		</show_tables_request>		
+		<!-- User should have CREATE SESSION, CREATE TABLES privileges -->
+
+		<statement id="0">
+			drop table ATTACHMENTS purge;
+		</statement>
+
+		<statement id="10">
+			drop table SERVICE_TBL purge;
+		</statement>
+
+		<statement id="15">
+			drop table NODE_TBL purge;		
+		</statement>
+
+		<statement id="20">
+			drop table ROOT_TBL purge;
+		</statement>
+
+		<statement id="21">
+			drop table ICONS_TBL;
+		</statement>
+
+		<statement id="25">
+			CREATE TABLE SERVICE_TBL (
+			  ID_PARAM number(11) NOT NULL,
+			  IS_ALREADY_IN_USE number(1) DEFAULT 0 NOT NULL,
+			  PASSWORD varchar2(255) DEFAULT NULL,
+			  PRIMARY KEY ( ID_PARAM )
+			);
+		</statement>
+
+		<statement id="26">
+			DROP TABLE IF EXISTS `icons_tbl`;
+		</statement>
+
+		<statement id="30">
+			create table ROOT_TBL (
+			  ID_TREE number(11) NOT NULL,
+			  TREE_NAME varchar2(255) NOT NULL,
+			  LAST_CHANGE date DEFAULT SYSDATE NOT NULL,
+			  ACTIVE number(1) DEFAULT 1 NOT NULL,
+			  CURRENT_ACTIVE number(1)DEFAULT 0 NOT NULL,
+			  PRIMARY KEY (ID_TREE),
+			  CONSTRAINT TREE_NAME_UNIQUE UNIQUE (TREE_NAME)
+			);
+		</statement>
+
+		<statement id="35">
+			CREATE TABLE NODE_TBL (
+			  ID_NODE number(11) NOT NULL,
+			  ID_PARENT number(11) NOT NULL,
+			  ID_TREE number(11) NOT NULL,
+			  NODE_NAME varchar2(255) NOT NULL,
+			  NODE_COLOR varchar(20),
+			  NODE_DESCRIPTOR varchar2(2000),
+			  ACTIVE number(1) DEFAULT 1 NOT NULL,
+			  EXPANDED number(1) DEFAULT 0 NOT NULL,
+			  LAST_CHANGE date DEFAULT SYSDATE NOT NULL,
+			  ID_ICON number(11) DEFAULT 0 NOT NULL,
+			  PRIMARY KEY (ID_NODE),
+			  -- KEY `tree_ind` (`id_tree`), -- don't understand the purpose
+			  CONSTRAINT NODE_TBL_IBFK_1 FOREIGN KEY (ID_TREE) REFERENCES ROOT_TBL (ID_TREE) ON DELETE CASCADE
+			);
+		</statement>
+
+		<statement id="40">
+			CREATE TABLE ATTACHMENTS (
+			  ID_ATTACH number(11) NOT NULL,
+			  ID_PARENT number(11) NOT NULL,
+			  ATTACH_NAME varchar2(255) NOT NULL,
+			  ATTACH_SIZE number(11) DEFAULT 1 NOT NULL,
+			  ACTIVE number(1) DEFAULT 1 NOT NULL,
+			  CRYPTED number(1) DEFAULT 0 NOT NULL,
+			  LOCKED number(1) DEFAULT 0 NOT NULL,
+			  IS_BINARY number(1) NOT NULL,
+			  LAST_CHANGE date DEFAULT SYSDATE NOT NULL,
+			  ATTACH blob NOT NULL,
+			  PRIMARY KEY (ID_ATTACH),
+			  -- KEY `attach_ind` (`id_parent`), -- Unknown goal ???
+			  CONSTRAINT ATTACHMENTS_IBFK_1 FOREIGN KEY (ID_PARENT) REFERENCES NODE_TBL (ID_NODE) ON DELETE CASCADE
+			);
+		</statement>
+
+		<statement id="45">
+			CREATE TABLE ICONS_TBL (
+			  ID_ICON number(11) NOT NULL,
+			  ICON_NAME varchar2(255) NOT NULL,
+			  ICON_HASH varchar2(255) NOT NULL,
+			  ICON_BODY blob NOT NULL,
+			  PRIMARY KEY (ID_ICON)
+			);
+		</statement>
+
+	</database>
+	<database type="SQLite">
+		<driver>QSQLITE</driver>
+		<show_tables_request>
+			select name from sqlite_master where type='table';
+		</show_tables_request>
+
+		<!-- this must be executed as the first command in each connection for the
+		     foreign keys to function properly
+		     -->
+		<connection_setup_request>
+			PRAGMA foreign_keys=on;
+		</connection_setup_request>
+
+		<statement id="0">
+			DROP TABLE IF EXISTS `attachments`;
+		</statement>
+
+		<statement id="10">
+			DROP TABLE IF EXISTS `service_tbl`;
+		</statement>
+
+		<statement id="15">
+			DROP TABLE IF EXISTS `node_tbl`;
+		</statement>
+
+		<statement id="20">
+			DROP TABLE IF EXISTS `root_tbl`;
+		</statement>
+
+		<statement id="21">
+			DROP TABLE IF EXISTS `icons_tbl`;
+		</statement>
+
+		<statement id="25">
+			CREATE TABLE `service_tbl` (
+			  `id_param` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+			  `is_already_in_use` INTEGER(1) NOT NULL DEFAULT '0',
+			  `password` TEXT DEFAULT NULL
+			);
+		</statement>
+
+		<statement id="30">
+			CREATE TABLE `root_tbl` (
+			  `id_tree` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+			  `tree_name` TEXT NOT NULL,
+			  `last_change` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			  `active` INTEGER(1) NOT NULL DEFAULT '1',
+			  `current_active` INTEGER(1) NOT NULL DEFAULT '0',
+			  UNIQUE (`tree_name`)
+			);
+		</statement>
+
+		<statement id="35">
+			CREATE TRIGGER `update_root_tbl_timestamp`
+			  AFTER UPDATE ON `root_tbl`
+			  FOR EACH ROW
+			  BEGIN
+			    UPDATE `root_tbl` SET last_change=datetime('now') WHERE id_tree=OLD.id_tree;
+			  END;
+		</statement>
+
+		<statement id="40">
+			CREATE TABLE `node_tbl` (
+			  `id_node` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+			  `id_parent` INTEGER NOT NULL,
+			  `id_tree` INTEGER NOT NULL,
+			  `node_name` TEXT NOT NULL,
+			  `node_color` TEXT,
+			  `node_descriptor` TEXT,
+			  `active` INTEGER(1) NOT NULL DEFAULT '1',
+			  `expanded` INTEGER(1) NOT NULL DEFAULT '0',
+			  `last_change` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			  `id_icon` INTEGER NOT NULL DEFAULT '0',
+			  CONSTRAINT `node_tbl_ibfk_1` FOREIGN KEY (`id_tree`) REFERENCES `root_tbl` (`id_tree`) ON DELETE CASCADE
+			);
+		</statement>
+
+		<statement id="60">
+			CREATE TRIGGER `update_node_tbl_timestamp`
+			  AFTER UPDATE ON `node_tbl`
+			  FOR EACH ROW
+			  BEGIN
+			    UPDATE `node_tbl` SET last_change=datetime('now') WHERE id_node=OLD.id_node;
+			  END;
+		</statement>
+
+		<statement id="65">
+			CREATE INDEX `tree_ind` ON `node_tbl` (`id_tree`);
+		</statement>
+
+		<statement id="70">
+			CREATE TABLE `attachments` (
+			  `id_attach` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+			  `id_parent` INTEGER NOT NULL,
+			  `attach_name` TEXT NOT NULL,
+			  `attach_size` INTEGER NOT NULL DEFAULT '1',
+			  `active` INTEGER(1) NOT NULL DEFAULT '1',
+			  `crypted` INTEGER(1) NOT NULL DEFAULT '0',
+			  `locked` INTEGER(1) NOT NULL DEFAULT '0',
+			  `is_binary` INTEGER(1) NOT NULL,
+			  `last_change` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			  `attach` BLOB NOT NULL,
+			  CONSTRAINT `attachments_ibfk_1` FOREIGN KEY (`id_parent`) REFERENCES `node_tbl` (`id_node`) ON DELETE CASCADE
+			);
+		</statement>
+
+		<statement id="75">
+			CREATE TRIGGER `update_attachments_timestamp`
+			  AFTER UPDATE ON `attachments`
+			  FOR EACH ROW
+			  BEGIN
+			    UPDATE `attachments` SET last_change=datetime('now') WHERE id_attach=OLD.id_attach;
+			  END;
+		</statement>
+
+		<statement id="76">
+			CREATE TABLE `icons_tbl` (
+			  `id_icon` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+			  `icon_name` TEXT NOT NULL,
+			  `icon_hash` TEXT NOT NULL,
+			  `icon_body` BLOB NOT NULL
+			);
+		</statement>
+
+		<statement id="80">
+			CREATE INDEX `attach_ind` ON `attachments` (`id_parent`);
+		</statement>
+	</database>
+</databases>
