@@ -244,6 +244,7 @@ QTableWidgetItem* MyTable::makeCellName (Attachment* ptr_attachment)
 
 QTableWidgetItem* MyTable::makeCellData (Attachment* ptr_attachment)
 {
+    //ToDo: replace it to getFotmattedDate.
     QString str_data = QString::number( ptr_attachment->getDateTime().date().day() );
     str_data += "-";
     str_data += QString::number( ptr_attachment->getDateTime().date().month() );

@@ -50,7 +50,7 @@ public:
                       const QString&   str_name,                  // node name
                       QObject*         parent_tree);
     //
-    // create from database, non-root leaf
+    // create from database
     //
     explicit TreeLeaf(TreeLeaf*         prtParentLeaf,
                       int               i_id,                     // node index in the node_tbl
@@ -73,6 +73,7 @@ signals:
 public slots:
 
 public:
+    bool                    extractAndFillChildList     ();
     ChildList               getChildList                ();
     TreeLeaf*               getChildNode                (int i_node_id);
     TreeLeaf*               getParent                   ();

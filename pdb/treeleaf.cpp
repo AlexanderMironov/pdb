@@ -72,7 +72,7 @@ TreeLeaf::TreeLeaf(TreeLeaf*        prtParentLeaf,
     Q_ASSERT (m_ptrParentTree);
 }
 //
-// create from database, non-root leaf
+// create from database
 //
 TreeLeaf::TreeLeaf(TreeLeaf*        prtParentLeaf,
                   int               i_id,                   // node index in the node_tbl
@@ -83,8 +83,9 @@ TreeLeaf::TreeLeaf(TreeLeaf*        prtParentLeaf,
                   const QString&    str_node_color,         // node text descriptor
                   const QString &str_html_descriptor,       // is node "deleted" or not
                   bool              b_is_active,            // index of the parent element in the root_tbl
-                  bool b_is_expanded,
-                  const QDateTime &dt_last_change, QObject *parent_tree
+                  bool              b_is_expanded,
+                  const QDateTime&  dt_last_change,
+                  QObject*          parent_tree
                ):
     AbstractDatabaseObject(i_id,
                            b_is_active,
@@ -820,7 +821,6 @@ bool  TreeLeaf::updateDescriptor_DB()
 
 void  TreeLeaf::updateExpandState_DB()
 {
-    //
     DBAcccessSafe   db_safe;
     //
     QSqlDatabase* ptr_db = db_safe.getDB();
@@ -848,6 +848,75 @@ void  TreeLeaf::updateExpandState_DB()
         Logger::getInstance().logIt( en_LOG_ERRORS, qry.lastError().text(), &str_update_string );
     };
 }
+
+bool TreeLeaf::extractAndFillChildList ()
+{
+    if( this->childCount() > 0)
+    {
+        return true; // avoid duplicated requests
+    };
+    //
+    DBAcccessSafe   db_safe;
+    //
+    QSqlDatabase* ptr_db = db_safe.getDB();
+    if (NULL == ptr_db)
+    {
+        return false;
+    };
+    //
+    QSqlQuery qry(*ptr_db);
+    //
+    const QString str_query = QString ("select id_node, id_icon, node_name, node_color, node_descriptor, active, expanded, last_change from node_tbl where id_parent=%1;").arg(this->getID());
+    //
+    //
+    if ( !qry.prepare( str_query ) )
+    {
+        Logger::getInstance().logIt( en_LOG_ERRORS, qry.lastError().text(), &str_query );
+        return false;
+    };
+    //
+    if( !qry.exec() )
+    {
+        Logger::getInstance().logIt( en_LOG_ERRORS, qry.lastError().text(), &str_query );
+        QMessageBox box;
+        box.setText("Unable to get exec the query. Stop. ");
+        box.exec();
+        //
+        return false;
+    };
+    //
+    while (qry.next())
+    {
+        //
+        const int     i_node_id           = qry.value(0).toInt();       //id_node
+        const int     i_parent_node_id    = this->getParentID();        //id_parent
+        const int     i_parent_tree_id    = this->getTreeID();          //id_tree
+        const int     i_icon_id           = qry.value(1).toInt();       //id_icon
+        const QString str_node_name       = qry.value(2).toString();    //node_name
+        const QString str_node_color      = qry.value(3).toString();    //node_color
+        const QString str_node_descriptor = qry.value(4).toString();    //node_descriptor
+        const bool    b_node_active       = qry.value(5).toBool();      //active
+        const bool    b_expanded          = qry.value(6).toBool();      //expanded
+        const QDateTime dt_time_change    = qry.value(7).toDateTime();  //last_change
+        //
+        TreeLeaf* ptr_child_leaf = new TreeLeaf(this,
+                                              i_node_id,
+                                              i_parent_node_id,
+                                              i_parent_tree_id,
+                                              i_icon_id,
+                                              str_node_name,
+                                              str_node_color,
+                                              str_node_descriptor,
+                                              b_node_active,
+                                              b_expanded,
+                                              dt_time_change,
+                                              m_ptrParentTree);
+        //
+        this->addChild(ptr_child_leaf);
+    };
+    //
+    return true;
+};
 
 TreeLeaf::ChildList TreeLeaf::getChildList ()
 {

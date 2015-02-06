@@ -21,14 +21,18 @@
 #include <QComboBox>
 #include <QGridLayout>
 #include <QDateTime>
-
+//#include <QSqlDatabase>
+//
+#include <stack>
 //
 #include "searcher.h"
 #include "searchrequest.h"
+#include "searchrequestres.h"
 //
 class MyTree;
 class TreeLeaf;
 class QTableWidgetItem;
+class QSqlDatabase;
 
 namespace Ui {
 class TreeSearchDlg;
@@ -49,11 +53,11 @@ public:
     void        setPtrToTree        (MyTree*        ptr_to_tree);
 
 public slots:
-    void    onBeginSearch       ();
-    void    onEndSearch         ();
-    void    onGetTotalNodesAmount(unsigned int);
-    void    onJumpNextNode      ();
-    void    onfoundNode         (TreeLeaf*,int);
+    //void    onBeginSearch       ();
+    //void    onEndSearch         ();
+    //void    onGetTotalNodesAmount(unsigned int);
+    //void    onJumpNextNode      ();
+    //void    onfoundNode         (TreeLeaf*,int);
 
 private slots:
 
@@ -69,30 +73,53 @@ private slots:
 
 private:
     //
+/*
     enum ACTUAL_DLG_MODE
     {
         enSEARCH_MODE = 1,
         enCANCEL_MODE = 2
     };
+*/
+    //
+    void    setHeaderParams         ();
+    int     getActualTreeID         ();
+    //bool b_search_in_node - true means "search in node" false means "search in descriptors"
+    QString generateNodeSQLRequest  (bool b_search_in_node);
+    QString generateAttNameSQLReq   ();
+    QString generateTimeCondition   (const QString &str_time_tbl_name);
+    //
+    bool    makeUniversalSearch     (SearchResArray& search_array, const QString& str_query, const QString &str_search_flag);
     //
     void    enableSearchButton      (const QString& str_search_string);
-    void    swapDlgMode             ();
+    //
+    void    fillTable               (const SearchResArray& search_array);
+    void    fillDataRow             (int i_row_num, const SearchRequestRes& res_element);
+    //
+    //recurcive call stopped when root has been found
+    //
+    bool    createNodeSearchPath    (QSqlDatabase* ptr_db, std::stack<int>& search_stack, int current_node_id);
+    void    getAnExpandTargetNode   (std::stack<int>& search_stack, TreeLeaf *ptr_actual_node);
+    //
+    QTableWidgetItem*               makeCellTree(const SearchRequestRes& res_element);
+    QTableWidgetItem*               makeCellNode(const SearchRequestRes& res_element);
+    QTableWidgetItem*               makeCellFlag(const SearchRequestRes& res_element);
+    // void    swapDlgMode             ();
     //
     void    startSearch             ();
-    void    cancelSearch            ();
+    //void    cancelSearch            ();
     //
     void    lockInterface           (bool b_lock = true);
     void    clearSearchResults      ();
     //
-    TreeLeaf* getLinkedLeaf         (QTableWidgetItem* ptr_cell);
-    QString getTreeNameByTreeID     (int i_tree_id);
-    void    addIndexToLocation      (QString& str_location, int i_location);
+    //TreeLeaf* getLinkedLeaf         (QTableWidgetItem* ptr_cell);
+    //QString getTreeNameByTreeID     (int i_tree_id);
+    //void    addIndexToLocation      (QString& str_location, int i_location);
     void    switchToTheTree         (int i_tree_id);
     void    setSignalSocketLinks    ();
     void    setFormLayout           ();
-    void    createSearchRequest     (SearchRequest& request);
+    //void    createSearchRequest     (SearchRequest& request);
     bool    isSearchArrayDefined    ();
-    void    fillComboPatternSyntax  ();
+    //void    fillComboPatternSyntax  ();
     bool    getEarliestDateFromDB   ();
 
 private:
@@ -100,7 +127,9 @@ private:
     //
     QComboBox*              m_ptrCombo;
     MyTree*                 m_ptrTree;
-    Searcher                m_Searcher;
+    //Searcher                m_Searcher;
+    //
+    bool                    m_bFillModeOn;
     //
     const unsigned int      m_uiTreeColNum;
     const unsigned int      m_uiNodeColNum;
@@ -108,7 +137,7 @@ private:
     //
     QDateTime               m_dtEarliestDateTime;
     //
-    ACTUAL_DLG_MODE m_enMode;
+    //ACTUAL_DLG_MODE m_enMode;
     //
     QGridLayout*     m_ptrFormLayout;
 

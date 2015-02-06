@@ -535,6 +535,7 @@ void MyTree::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* pre
     //
     if (ptr_actual_item)
     {
+        ptr_actual_item->extractAndFillChildList();
         //request attachments list
         ptr_actual_item->getAttachments();
         //used for menu
@@ -1066,12 +1067,34 @@ void MyTree::init()
     //
     m_IconLoadLocker.lock();
     //
-    getLeafsFromDatabase_DB();
+    //getLeafsFromDatabase_DB();
     //
     m_IconLoadLocker.unlock();
     //
     this->setSortingEnabled(true);
     //
+    if ( getAllRootNodes() == false)
+    {
+        return;
+    };
+    //
+    for (int i = 0; i < m_ptrTreeComboBox->count(); i++)
+    {
+        QVariant root_back_data = m_ptrTreeComboBox->itemData(i);
+        RootOfTree* ptr_root    = VariantPtr<RootOfTree>::asPtr( root_back_data );
+        if (ptr_root)
+        {
+            TreeLeaf* ptr_top_node =  ptr_root->getChildLeaf();
+
+            if (ptr_top_node)
+            {
+                ptr_top_node->extractAndFillChildList();
+            };
+        };
+    };
+    //
+    //return;
+/*
     int i_last_used_tree_id = getLastUsedRootID_DB();
     //
     if (-1 != i_last_used_tree_id)
@@ -1096,7 +1119,113 @@ void MyTree::init()
     {
         m_ptrTreeComboBox->setCurrentIndex(-1);
     };
+*/
+    showLastSelectedTree();
 }
+
+bool MyTree::getAllRootNodes()
+{
+    for (int i = 0; i < m_ptrTreeComboBox->count(); i++)
+    {
+        QVariant root_back_data = m_ptrTreeComboBox->itemData(i);
+        RootOfTree* ptr_root    = VariantPtr<RootOfTree>::asPtr( root_back_data );
+        if (ptr_root)
+        {
+            if (getTreeRootNode (ptr_root) == false)
+            {
+                return false;
+            };
+        };
+    };
+    //
+    return true;
+};
+
+bool MyTree::getTreeRootNode (RootOfTree* ptr_root)
+{
+    DBAcccessSafe   db_safe;
+    //
+    QSqlDatabase* ptr_db = db_safe.getDB();
+    if (NULL == ptr_db)
+        return false;
+    //
+    QSqlQuery qry(*ptr_db);
+    //
+    const QString str_query = QString ("select id_node, id_icon, node_name, node_color, node_descriptor, active, expanded, last_change from node_tbl where id_parent=0 and id_tree=%1;").arg(ptr_root->getID());
+    //
+    if ( !qry.prepare( str_query ) )
+    {
+        Logger::getInstance().logIt( en_LOG_ERRORS, qry.lastError().text(), &str_query );
+        return false;
+    };
+    //
+    if( !qry.exec() )
+    {
+        Logger::getInstance().logIt( en_LOG_ERRORS, qry.lastError().text(), &str_query );
+        QMessageBox box;
+        box.setText("Unable to get exec the query. Stop. ");
+        box.exec();
+        //
+        return false;
+    };
+    //
+    qry.next();
+    //
+    const int     i_node_id           = qry.value(0).toInt();       //id_node
+    const int     i_parent_node_id    = 0;                          //id_parent
+    const int     i_parent_tree_id    = ptr_root->getID();          //id_tree
+    const int     i_icon_id           = qry.value(1).toInt();       //id_icon
+    const QString str_node_name       = qry.value(2).toString();    //node_name
+    const QString str_node_color      = qry.value(3).toString();    //node_color
+    const QString str_node_descriptor = qry.value(4).toString();    //node_descriptor
+    const bool    b_node_active       = qry.value(5).toBool();      //active
+    const bool    b_expanded          = qry.value(6).toBool();      //expanded
+    const QDateTime dt_time_change    = qry.value(7).toDateTime();      //last_change
+    //
+    TreeLeaf* ptr_root_leaf = new TreeLeaf(NULL,
+                                          i_node_id,
+                                          i_parent_node_id,
+                                          i_parent_tree_id,
+                                          i_icon_id,
+                                          str_node_name,
+                                          str_node_color,
+                                          str_node_descriptor,
+                                          b_node_active,
+                                          b_expanded,
+                                          dt_time_change,
+                                          this);
+    //
+    ptr_root->addChildLeaf(ptr_root_leaf);
+    return true;
+};
+
+void MyTree::showLastSelectedTree ()
+{
+    int i_last_used_tree_id = getLastUsedRootID_DB();
+    //
+    if (-1 != i_last_used_tree_id)
+    {
+        //
+        for (int i = 0; i < m_ptrTreeComboBox->count(); i++)
+        {
+            QVariant root_back_data = m_ptrTreeComboBox->itemData(i);
+            RootOfTree* ptr_root    = VariantPtr<RootOfTree>::asPtr( root_back_data );
+            if (ptr_root)
+            {
+                if ( ptr_root->getID() == i_last_used_tree_id)
+                {
+                    m_ptrTreeComboBox->setCurrentIndex(i);
+                    onCurrentDBChanged(i);
+                    emit endOfInit(i);
+                    break;
+                };
+            };
+        };
+    }else
+    {
+        m_ptrTreeComboBox->setCurrentIndex(-1);
+    };
+};
 
 int MyTree::getLastUsedRootID_DB    () const
 {
@@ -1268,20 +1397,20 @@ bool MyTree::getLeafsFromDatabase_DB()
 
         while( qry.next() )
         {
-            const int     i_node_id           = qry.value(0).toInt();
-            const int     i_parent_node_id    = qry.value(1).toInt();
-            const int     i_parent_tree_id    = qry.value(2).toInt();
-            const int     i_icon_id           = qry.value(3).toInt();
-            const QString str_node_name       = qry.value(4).toString();
-            const QString str_node_color      = qry.value(5).toString();
-            const QString str_node_descriptor = qry.value(6).toString();
-            const bool    b_node_active       = qry.value(7).toBool();
-            const bool    b_expanded          = qry.value(8).toBool();
+            const int     i_node_id           = qry.value(0).toInt();       //id_node
+            const int     i_parent_node_id    = qry.value(1).toInt();       //id_parent
+            const int     i_parent_tree_id    = qry.value(2).toInt();       //id_tree
+            const int     i_icon_id           = qry.value(3).toInt();       //id_icon
+            const QString str_node_name       = qry.value(4).toString();    //node_name
+            const QString str_node_color      = qry.value(5).toString();    //node_color
+            const QString str_node_descriptor = qry.value(6).toString();    //node_descriptor
+            const bool    b_node_active       = qry.value(7).toBool();      //active
+            const bool    b_expanded          = qry.value(8).toBool();      //expanded
 /*
             QString str_check = qry.value(5).toString();
             int i_check = qry.value(5).toInt();
 */
-            QDateTime dt_time_change    = qry.value(7).toDateTime();
+            QDateTime dt_time_change    = qry.value(9).toDateTime();        //last_change
             //
             // if actual tree root is not defined or does not matched with the new node
             //

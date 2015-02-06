@@ -64,7 +64,8 @@ SOURCES += main.cpp\
     dlgscanimage.cpp \
     dlgrotateparams.cpp \
     imagelabel.cpp \
-    dlgsavescan.cpp
+    dlgsavescan.cpp \
+    searchrequestres.cpp
 
 HEADERS  += mainwindow.h \
     GDefinitions.h \
@@ -115,7 +116,8 @@ HEADERS  += mainwindow.h \
     dlgscanimage.h \
     dlgrotateparams.h \
     imagelabel.h \
-    dlgsavescan.h
+    dlgsavescan.h \
+    searchrequestres.h
 
 FORMS    += mainwindow.ui \
     notificationdialog.ui \
