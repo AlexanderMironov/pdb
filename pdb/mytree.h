@@ -142,8 +142,12 @@ signals:
 private:
     //
     //
+    void        showLastSelectedTree ();
     //
-    bool isPossibleMoveNodeHere             (TreeLeaf* ptr_moving_node, TreeLeaf* ptr_target_node, bool b_silence = true);
+    bool        getAllRootNodes ();
+    bool        getTreeRootNode(RootOfTree* ptr_root);
+    //
+    bool        isPossibleMoveNodeHere             (TreeLeaf* ptr_moving_node, TreeLeaf* ptr_target_node, bool b_silence = true);
     //
     // This function return id of last used root of tree, or -1
     //

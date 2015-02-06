@@ -104,4 +104,6 @@ Date 		CommitID		Changes
 --------------------------------------------------------------------------------------------------------
 31.07.2013	31.07.2013-1		Make exit buttons unavailable after 1-st click, use new threadpool
 --------------------------------------------------------------------------------------------------------
-01.102013	01.10.2013-1		Make ask password before loading trees.
+01.10.2013	01.10.2013-1		Make ask password before loading trees.
+--------------------------------------------------------------------------------------------------------
+06.02.2015                      Change node loadding, change search engine (move it completely on server side) REGEXP search not finished yet.
