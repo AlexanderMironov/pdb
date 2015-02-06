@@ -32,6 +32,21 @@ int main(int argc, char *argv[])
     //
     QApplication a(argc, argv);
     //
+    QSharedMemory sharedMemory("pdb");
+    //
+/*
+    if(sharedMemory.create(1))
+    {
+        qDebug()<<"created";
+    }else{
+        if (sharedMemory.error() == QSharedMemory::AlreadyExists)
+        {
+            QMessageBox::critical(NULL,"Error launching app","Application pdb is already active",QMessageBox::Ok,QMessageBox::Ok);
+            return 1;
+        };
+    };
+    */
+    //
     qRegisterMetaTypeStreamOperators<DBSettings>("DBSettings");
     //
     const QSettings settings( g_strCOMPANY, g_str_CNF_APP_NAME );
