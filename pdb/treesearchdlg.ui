@@ -25,34 +25,6 @@
   <property name="windowTitle">
    <string>Search...</string>
   </property>
-  <widget class="QProgressBar" name="m_progressBar">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>400</y>
-     <width>471</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>100</width>
-     <height>24</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>16777215</width>
-     <height>24</height>
-    </size>
-   </property>
-   <property name="autoFillBackground">
-    <bool>true</bool>
-   </property>
-   <property name="value">
-    <number>0</number>
-   </property>
-  </widget>
   <widget class="QTableWidget" name="m_SearchResults">
    <property name="geometry">
     <rect>
@@ -374,29 +346,6 @@
     <string>Begin search</string>
    </property>
   </widget>
-  <widget class="QLabel" name="m_lblPatternSyntax">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>111</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Pattern syntax</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="m_cmbPatternSyntax">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>40</y>
-     <width>411</width>
-     <height>24</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QDateTimeEdit" name="m_dateTimeEdit_from">
    <property name="geometry">
     <rect>
@@ -460,10 +409,7 @@
   <zorder>LblSearchOptions</zorder>
   <zorder>LblSearchResults</zorder>
   <zorder>LblFake</zorder>
-  <zorder>m_progressBar</zorder>
   <zorder>LblFake2</zorder>
-  <zorder>m_lblPatternSyntax</zorder>
-  <zorder>m_cmbPatternSyntax</zorder>
   <zorder>m_dateTimeEdit_from</zorder>
   <zorder>m_dateTimeEdit_to</zorder>
   <zorder>m_checkBoxFrom</zorder>
