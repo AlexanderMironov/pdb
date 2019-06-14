@@ -25,8 +25,8 @@
 //
 #include <stack>
 //
-#include "searcher.h"
-#include "searchrequest.h"
+//#include "searcher.h"
+//#include "searchrequest.h"
 #include "searchrequestres.h"
 //
 class MyTree;
@@ -53,11 +53,6 @@ public:
     void        setPtrToTree        (MyTree*        ptr_to_tree);
 
 public slots:
-    //void    onBeginSearch       ();
-    //void    onEndSearch         ();
-    //void    onGetTotalNodesAmount(unsigned int);
-    //void    onJumpNextNode      ();
-    //void    onfoundNode         (TreeLeaf*,int);
 
 private slots:
 
@@ -72,14 +67,7 @@ private slots:
     void    onToSearchClick();
 
 private:
-    //
-/*
-    enum ACTUAL_DLG_MODE
-    {
-        enSEARCH_MODE = 1,
-        enCANCEL_MODE = 2
-    };
-*/
+
     //
     void    setHeaderParams         ();
     int     getActualTreeID         ();
@@ -106,20 +94,11 @@ private:
     // void    swapDlgMode             ();
     //
     void    startSearch             ();
-    //void    cancelSearch            ();
-    //
-    void    lockInterface           (bool b_lock = true);
     void    clearSearchResults      ();
-    //
-    //TreeLeaf* getLinkedLeaf         (QTableWidgetItem* ptr_cell);
-    //QString getTreeNameByTreeID     (int i_tree_id);
-    //void    addIndexToLocation      (QString& str_location, int i_location);
     void    switchToTheTree         (int i_tree_id);
     void    setSignalSocketLinks    ();
     void    setFormLayout           ();
-    //void    createSearchRequest     (SearchRequest& request);
     bool    isSearchArrayDefined    ();
-    //void    fillComboPatternSyntax  ();
     bool    getEarliestDateFromDB   ();
 
 private:
@@ -127,7 +106,6 @@ private:
     //
     QComboBox*              m_ptrCombo;
     MyTree*                 m_ptrTree;
-    //Searcher                m_Searcher;
     //
     bool                    m_bFillModeOn;
     //
@@ -137,9 +115,7 @@ private:
     //
     QDateTime               m_dtEarliestDateTime;
     //
-    //ACTUAL_DLG_MODE m_enMode;
-    //
-    QGridLayout*     m_ptrFormLayout;
+    QGridLayout*            m_ptrFormLayout;
 
 };
 

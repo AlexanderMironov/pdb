@@ -22,6 +22,7 @@
 #include "logger.h"
 #include "connectionmanager.h"
 //
+//#include <QtGlobal>
 #include <QCryptographicHash>
 #include <QByteArray>
 #include <QMessageBox>
@@ -367,7 +368,7 @@ bool PasswordDlg::ecrypt_decrypt_attachments ( CryptoThread::REQESTED_ACTION en_
         str_title = "Decrypt all encrypted attachments";
         break;
     default:
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         return false;
     };
     //
@@ -622,7 +623,7 @@ void PasswordDlg::setDlgMode (PASSWORD_MODE en_mode)
         this->resize(405, 90);
         break;
     default:
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         break;
     };
 }
@@ -658,7 +659,7 @@ void PasswordDlg::onReEncryptError (CryptoThread::REQESTED_ACTION action)
         QMessageBox::critical(NULL, "Error", "Can not decrypt attachment. Stop.", QMessageBox::Ok);
         break;
     default:
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
     };
 }
 

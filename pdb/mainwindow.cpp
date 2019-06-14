@@ -453,7 +453,7 @@ void  MainWindow::onLockAppScreen ()
 void  MainWindow::onCreateChangePassword ()
 {
     if (NULL == m_ptrPwdDlg)
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
     //
     m_ptrPwdDlg->setDbCombobox(ui->m_DBNameList); //for iterating list of nodes and attachments
     //

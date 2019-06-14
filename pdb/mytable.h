@@ -20,6 +20,7 @@
 #include <QtGui>
 #include <QTableWidget>
 #include <QProgressDialog>
+#include <QStatusBar>
 //
 #include "treeleaf.h"
 #include "cryptothread.h"

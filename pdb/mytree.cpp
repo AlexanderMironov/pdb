@@ -24,6 +24,10 @@
 #include <QtDebug>
 #include <QMutexLocker>
 #include <QListView>
+#include <QStatusBar>
+#include <QColorDialog>
+#include <QFileDialog>
+#include <QApplication>
 #include <qlistview.h>
 //
 #include <vector>
@@ -636,7 +640,7 @@ void MyTree::execGlobalEncryptionOperation ( bool b_encrypt )
         b_recursive = true;
         break;
     default:
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
     };
     //
     if (ptr_actual_item)
@@ -703,7 +707,7 @@ void MyTree::execGlobalProtectionOperation ( bool b_protect )
         b_recursive = true;
         break;
     default:
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
     }
     //
     if (ptr_actual_item)
@@ -1522,7 +1526,7 @@ bool MyTree::getLeafsFromDatabase_DB()
     //
     if (i_found_counter != v_orpheline_nodes.size())
     {
-        Q_ASSERT ( FALSE );        //something wrong witth DB!!!
+        Q_ASSERT ( false );        //something wrong witth DB!!!
     };
     //
     // v_orpheline_nodes.erase(v_orpheline_nodes.begin(), v_orpheline_nodes.end());

@@ -5,12 +5,21 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += widgets
 QT       += sql
-
+#
+CONFIG   += qt
 CONFIG 	 += plugin
 CONFIG 	 += crypto
-
-LIBS	 += -lqca
+CONFIG   += static
+QT       += printsupport
+#
+#LIBS	 += -L /usr/lib/x86_64-linux-gnu/ -lqca
+LIBS	 += -lqca-qt5
+#
+#/usr/lib/x86_64-linux-gnu/
+#/mnt/old_system/usr/lib/x86_64-linux-gnu/
+#/usr/lib/x86_64-linux-gnu/libqca.so
 
 TARGET = pdb
 TEMPLATE = app
@@ -39,9 +48,7 @@ SOURCES += main.cpp\
     dlgexportparams.cpp \
     treestatisticdlg.cpp \
     treesearchdlg.cpp \
-    searcher.cpp \
     servicescfg.cpp \
-    searchrequest.cpp \
     logger.cpp \
     tunnelmaker.cpp \
     attachimportorreplacedlg.cpp \
@@ -89,9 +96,7 @@ HEADERS  += mainwindow.h \
     dlgexportparams.h \
     treestatisticdlg.h \
     treesearchdlg.h \
-    searcher.h \
     servicescfg.h \
-    searchrequest.h \
     logger.h \
     tunnelmaker.h \
     attachimportorreplacedlg.h \
@@ -139,10 +144,11 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     pdb_res.qrc
 
-unix:!macx:!symbian|win32: LIBS += -L$$PWD/../../ThreadPoolProject/AdvThreadPool/ -lAdvThreadPool
+unix:!macx:!symbian|win32: LIBS += -L$$PWD/../../ThreadPoolProject/release/ -lAdvThreadPool
 
 INCLUDEPATH += $$PWD/../../ThreadPoolProject/AdvThreadPool
+INCLUDEPATH += /opt/Qt54/5.4/Src/qtbase/include
 DEPENDPATH += $$PWD/../../ThreadPoolProject/AdvThreadPool
 
 win32: PRE_TARGETDEPS += $$PWD/../../ThreadPoolProject/AdvThreadPool/AdvThreadPool.lib
-else:unix:!macx:!symbian: PRE_TARGETDEPS += $$PWD/../../ThreadPoolProject/AdvThreadPool/libAdvThreadPool.a
+else:unix:!macx:!symbian: PRE_TARGETDEPS += $$PWD/../../ThreadPoolProject/release/libAdvThreadPool.a

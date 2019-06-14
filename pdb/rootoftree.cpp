@@ -214,6 +214,6 @@ void RootOfTree::addChildLeaf(TreeLeaf* ptr_leaf)
         return;
     };
     //
-    Q_ASSERT (FALSE);
+    Q_ASSERT (false);
 };
 

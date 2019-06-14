@@ -108,7 +108,7 @@ void DlgExportParams::onOK()
         m_enExportFormat = en_PDF;
         break;
     default:
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         m_enExportFormat = en_TXT;
     };
     //

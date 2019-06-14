@@ -38,8 +38,8 @@
   <widget class="QCheckBox" name="m_checkCurrentTree">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>210</y>
+     <x>40</x>
+     <y>170</y>
      <width>142</width>
      <height>21</height>
     </rect>
@@ -48,27 +48,11 @@
     <string>Only in current tree</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="m_checkSearchInAttach">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>200</y>
-     <width>159</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Search in attachments</string>
-   </property>
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QCheckBox" name="m_checkSearchInANames">
    <property name="geometry">
     <rect>
      <x>360</x>
-     <y>180</y>
+     <y>160</y>
      <width>193</width>
      <height>21</height>
     </rect>
@@ -81,7 +65,7 @@
    <property name="geometry">
     <rect>
      <x>370</x>
-     <y>150</y>
+     <y>130</y>
      <width>181</width>
      <height>21</height>
     </rect>
@@ -94,7 +78,7 @@
    <property name="geometry">
     <rect>
      <x>380</x>
-     <y>120</y>
+     <y>100</y>
      <width>152</width>
      <height>21</height>
     </rect>
@@ -109,27 +93,14 @@
     <string>Search in node names</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="m_checkWholeWords">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>150</y>
-     <width>128</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Whole words only</string>
-   </property>
-  </widget>
   <widget class="QCheckBox" name="m_checkRegExp">
    <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>180</y>
+     <x>40</x>
+     <y>140</y>
      <width>164</width>
      <height>21</height>
     </rect>
@@ -246,7 +217,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Search:</string>
+    <string>Search text:</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="m_eSearchString">
@@ -399,11 +370,9 @@
   <zorder>m_bSearch</zorder>
   <zorder>m_SearchResults</zorder>
   <zorder>m_checkCurrentTree</zorder>
-  <zorder>m_checkSearchInAttach</zorder>
   <zorder>m_checkSearchInANames</zorder>
   <zorder>m_checkSearchInDescriptor</zorder>
   <zorder>m_checkSearchInNode</zorder>
-  <zorder>m_checkWholeWords</zorder>
   <zorder>m_checkRegExp</zorder>
   <zorder>m_checkCaseSensitive</zorder>
   <zorder>LblSearchOptions</zorder>

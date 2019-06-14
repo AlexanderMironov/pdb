@@ -275,7 +275,7 @@ bool CryptoSupport::encrypt_string ( SymmetricMethods tec_code, const QString& s
                                        iv);
 
     //
-    QCA::SecureArray secureData     = str_input.toAscii();
+    QCA::SecureArray secureData     = str_input.toLatin1();
     //we encrypt the data
     QCA::SecureArray encryptedData  = cipher.process(secureData);
     //check if encryption succeded
@@ -320,7 +320,7 @@ bool CryptoSupport::decrypt_string ( SymmetricMethods tec_code, const QString& s
                                      iv);
     //
 
-    QByteArray array_temp(str_input_64.toAscii());
+    QByteArray array_temp(str_input_64.toLatin1());
 
     QCA::SecureArray encryptedData = QByteArray::fromBase64( array_temp );
     //QCA::SecureArray encryptedData = str_input.toAscii();

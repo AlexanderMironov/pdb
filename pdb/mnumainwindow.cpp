@@ -427,7 +427,7 @@ void MnuMainWindow::onSelectedNodeChanged(TreeLeaf* ptr_to_current, bool has_cut
     m_ptrProtectAttachmentsOfAllNodes       ->setEnabled(false);
     m_ptrUn_ProtectAttachmentsOfAllNodes    ->setEnabled(false);
     //
-    m_ptrDelNode                ->setEnabled(false);
+    m_ptrDelNode                ->setEnabled(true);
     m_ptrInsertNewNode          ->setEnabled(false);
     m_ptrChangeNodeColor        ->setEnabled(false);
     m_ptrSetNodeIcon            ->setEnabled(false);
@@ -465,7 +465,7 @@ void MnuMainWindow::onSelectedNodeChanged(TreeLeaf* ptr_to_current, bool has_cut
         return;
     //
     AbstractDatabaseObject::DB_OBJECT_STATUS node_state = ptr_to_current->getObjectStatus();
-    bool b_is_root_node    = (ptr_to_current->getParentID() == 0);
+    const bool b_is_root_node    = (ptr_to_current->getParentID() == 0);
     //
 
     //
@@ -480,7 +480,7 @@ void MnuMainWindow::onSelectedNodeChanged(TreeLeaf* ptr_to_current, bool has_cut
     switch(node_state)
     {
     case AbstractDatabaseObject::OBJECT_NOT_DEFINED:
-        m_ptrDelNode                ->setEnabled(false);
+        m_ptrDelNode                ->setEnabled(true);
         m_ptrInsertNewNode          ->setEnabled(false);
         m_ptrChangeNodeColor        ->setEnabled(false);
         m_ptrSetNodeIcon            ->setEnabled(false);
@@ -497,9 +497,13 @@ void MnuMainWindow::onSelectedNodeChanged(TreeLeaf* ptr_to_current, bool has_cut
         break;
     case AbstractDatabaseObject::OBJECT_OK:
         if (b_is_root_node)
+        {
             m_ptrDelNode            ->setEnabled(false);
+        }
         else
+        {
             m_ptrDelNode            ->setEnabled(true);
+        };
         //
         m_ptrRestoreNode        ->setEnabled(false);  
         //
@@ -1131,7 +1135,7 @@ void MnuMainWindow::createNodeControlMenu()
     m_ptrDelNode        ->setIcon(QIcon(":/images/images/delete.png"));
     m_ptrDelNode        ->setShortcut(QKeySequence (Qt::ALT + Qt::Key_D));
     m_ptrDelNode        ->setStatusTip(tr("Delete current node"));
-    m_ptrDelNode        ->setEnabled(false);
+    m_ptrDelNode        ->setEnabled(true);
     //
     m_ptrRestoreNode    = new QAction(tr("Restore current node"), this);
     m_ptrRestoreNode    ->setIconVisibleInMenu(true);

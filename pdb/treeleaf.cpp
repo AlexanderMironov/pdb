@@ -30,8 +30,9 @@
 //#include <QThreadPool>
 #include <QMessageBox>
 #include <QTextDocumentWriter>
-#include <QPrinter>
+#include <QtPrintSupport/QPrinter>
 #include <QPixmap>
+#include <QStatusBar>
 //
 // create from user interface
 //
@@ -59,7 +60,7 @@ TreeLeaf::TreeLeaf(TreeLeaf*        prtParentLeaf,
     {
         if (insertTo_DB() < 0)
         {
-            Q_ASSERT( FALSE);
+            Q_ASSERT( false);
             return;
         }else
         {
@@ -172,6 +173,9 @@ bool  TreeLeaf::exportNode ( const QString&    str_directory_path,
         return false;
     };
     //
+    extractAndFillChildList();
+    getAttachments();
+    //
     if ( false == exportNodeDescriptor(fmt, str_new_dir) )
         return false;
     //
@@ -257,7 +261,7 @@ bool TreeLeaf::exportNodeDescriptor( ExportFormat fmt, const QString& str_full_p
     }
         break;
     default:
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         return false;
     };
     //
@@ -283,7 +287,7 @@ QString TreeLeaf::getExtByExportFormat ( ExportFormat fmt ) const
         str_ret = ".pdf";
         break;
     default:
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         str_ret = ".txt";
         break;
     };
@@ -889,7 +893,7 @@ bool TreeLeaf::extractAndFillChildList ()
     {
         //
         const int     i_node_id           = qry.value(0).toInt();       //id_node
-        const int     i_parent_node_id    = this->getParentID();        //id_parent
+        const int     i_parent_node_id    = this->getID();              //id_parent
         const int     i_parent_tree_id    = this->getTreeID();          //id_tree
         const int     i_icon_id           = qry.value(1).toInt();       //id_icon
         const QString str_node_name       = qry.value(2).toString();    //node_name
@@ -1130,7 +1134,7 @@ bool TreeLeaf::exec()
         DB_OBJECT_STATUS status = getObjectStatus(); //just for check under debugger
 #endif
 */
-        Q_ASSERT( FALSE );
+        Q_ASSERT( false );
         return false;
     };
     //
@@ -1182,6 +1186,8 @@ void TreeLeaf::setItemColor()
 
 bool TreeLeaf::isPossibleToDeleteNode(bool b_silence, bool b_force)
 {
+    extractAndFillChildList();
+    //
     QMessageBox box;
     QString str_msg;
     bool b_possible_to_delete = true;

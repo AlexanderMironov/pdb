@@ -111,7 +111,7 @@ void DlgInsertTable::setTableFormat ( const QTextTableFormat& tbl_format )
         i_current_index = 10;
         break;
     default:
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         i_current_index = 0;
         break;
     };
@@ -161,7 +161,7 @@ QTextFrameFormat::BorderStyle DlgInsertTable::getBorderStyle() const
     case 10:
         return QTextFrameFormat::BorderStyle_Outset;
     default:
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         break;
     };
     //

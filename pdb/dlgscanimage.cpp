@@ -378,7 +378,7 @@ void DlgScanImage::setCurrentImage (double d_scale_factor)
 {
     if ( (m_iCurrentActiveImageIndex < 0) || ( m_iCurrentActiveImageIndex > (m_vActionsBuffer.size()-1) ) )
     {
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         return;
     }
     //
@@ -483,7 +483,7 @@ void DlgScanImage::onUndo ()
 {
     if (m_iCurrentActiveImageIndex >= (m_vActionsBuffer.size() - 1) )
     {
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         return;
     };
     //
@@ -497,7 +497,7 @@ void DlgScanImage::onRedo ()
 {
     if (m_iCurrentActiveImageIndex == 0 )
     {
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         return;
     };
     //
@@ -814,7 +814,7 @@ void DlgScanImage::onResize()
     //
     if (ptr_tmp_image->isNull())
     {
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         delete ptr_tmp_image;
         return;
     };

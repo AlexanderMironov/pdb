@@ -86,7 +86,7 @@ void CryptoThread::run()
         return;
     default:
         m_bContinueWork = false;
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         break;
     };
     //
@@ -126,7 +126,7 @@ void CryptoThread::run()
             continue;
             break;
         default:
-            Q_ASSERT(FALSE);
+            Q_ASSERT(false);
         };
         //
         if (false == b_resut)

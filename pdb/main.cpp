@@ -15,7 +15,7 @@
     along with pdb.  If not, see <http://www.gnu.org/licenses/>.
 */
 //
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QSettings>
 #include <QSharedMemory>
 #include <QMessageBox>

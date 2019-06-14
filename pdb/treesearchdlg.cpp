@@ -24,7 +24,7 @@
 #include "dbacccesssafe.h"
 #include "logger.h"
 #include "../CommonInclude/pdb/pdb_style.h"
-#include "waiter.h"
+//#include "waiter.h"
 //
 
 //
@@ -57,20 +57,11 @@ TreeSearchDlg::TreeSearchDlg(QWidget *parent) :
     //disable search button
     this->ui->m_bSearch->setEnabled(false);
     //
-    //m_enMode = enSEARCH_MODE;
-    //
-    //this->ui->m_progressBar->setVisible(false);
-    //
-    //this->ui->m_lblPatternSyntax->setVisible(false);
-    //this->ui->m_cmbPatternSyntax->setVisible(false);
-    //
-    //fillComboPatternSyntax();
-    //
     onFromSearchClick();
     onToSearchClick();
     //
-    //ui->m_checkCaseSensitive->setEnabled(false);
-    ui->m_checkSearchInAttach->setEnabled(false);
+    //ui->m_checkSearchInAttach->setEnabled(false);
+    //ui->m_checkWholeWords->setEnabled(false);
 }
 
 TreeSearchDlg::~TreeSearchDlg()
@@ -92,9 +83,9 @@ void TreeSearchDlg::setHeaderParams ()
     QHeaderView *header = this->ui->m_SearchResults->horizontalHeader();
     header->setDefaultAlignment(Qt::AlignCenter);
     //
-    header->setResizeMode(m_uiTreeColNum,       QHeaderView::Fixed);
-    header->setResizeMode(m_uiNodeColNum,       QHeaderView::Stretch);
-    header->setResizeMode(m_uiLocationColNum,   QHeaderView::Fixed);
+    header->setSectionResizeMode(m_uiTreeColNum,       QHeaderView::Fixed);
+    header->setSectionResizeMode(m_uiNodeColNum,       QHeaderView::Stretch);
+    header->setSectionResizeMode(m_uiLocationColNum,   QHeaderView::Fixed);
 }
 
 bool TreeSearchDlg::getEarliestDateFromDB ()
@@ -141,17 +132,6 @@ bool TreeSearchDlg::getEarliestDateFromDB ()
     return true;
 }
 
-/*
-void TreeSearchDlg::fillComboPatternSyntax()
-{
-    this->ui->m_cmbPatternSyntax->addItem(tr("Wildcard"), QRegExp::Wildcard);
-    this->ui->m_cmbPatternSyntax->addItem(tr("Regular expression v1"), QRegExp::RegExp);
-    this->ui->m_cmbPatternSyntax->addItem(tr("Regular expression v2"), QRegExp::RegExp2);
-    //this->ui->m_cmbPatternSyntax->addItem(tr("Fixed string"), QRegExp::FixedString);
-    this->ui->m_cmbPatternSyntax->addItem(tr("W3C Xml Schema 1.1"), QRegExp::W3CXmlSchema11);
-}
-*/
-
 void TreeSearchDlg::setFormLayout()
 {
     m_ptrFormLayout = new QGridLayout(this);
@@ -172,16 +152,18 @@ void TreeSearchDlg::setFormLayout()
     m_ptrFormLayout->addWidget(this->ui->m_checkSearchInNode, i_row,3,1,3);
     //
     i_row++;
-    m_ptrFormLayout->addWidget(this->ui->m_checkWholeWords, i_row,0,1,3);
+    m_ptrFormLayout->addWidget(this->ui->m_checkRegExp, i_row,0,1,3);
+    //m_ptrFormLayout->addWidget(this->ui->m_checkWholeWords, i_row,0,1,3);
     m_ptrFormLayout->addWidget(this->ui->m_checkSearchInDescriptor, i_row,3,1,3);
     //
     i_row++;
-    m_ptrFormLayout->addWidget(this->ui->m_checkRegExp, i_row,0,1,3);
+    //m_ptrFormLayout->addWidget(this->ui->m_checkRegExp, i_row,0,1,3);
+    m_ptrFormLayout->addWidget(this->ui->m_checkCurrentTree, i_row,0,1,3);
     m_ptrFormLayout->addWidget(this->ui->m_checkSearchInANames, i_row,3,1,3);
     //
-    i_row++;
-    m_ptrFormLayout->addWidget(this->ui->m_checkCurrentTree, i_row,0,1,3);
-    m_ptrFormLayout->addWidget(this->ui->m_checkSearchInAttach, i_row,3,1,3);
+    //i_row++;
+    //m_ptrFormLayout->addWidget(this->ui->m_checkCurrentTree, i_row,0,1,3);
+    //m_ptrFormLayout->addWidget(this->ui->m_checkSearchInAttach, i_row,3,1,3);
     //
     // earlieast search day is the 1-st day from db (attachment or node)
     // latest day is always today
@@ -244,17 +226,7 @@ void TreeSearchDlg::setSignalSocketLinks()
     QObject::connect(this->ui->m_checkSearchInNode,         SIGNAL(stateChanged(int)),  this, SLOT (onClickSearchArray() ));
     QObject::connect(this->ui->m_checkSearchInDescriptor,   SIGNAL(stateChanged(int)),  this, SLOT (onClickSearchArray() ));
     QObject::connect(this->ui->m_checkSearchInANames,       SIGNAL(stateChanged(int)),  this, SLOT (onClickSearchArray() ));
-    QObject::connect(this->ui->m_checkSearchInAttach,       SIGNAL(stateChanged(int)),  this, SLOT (onClickSearchArray() ));
-    //
-    //process signal from/to search thread
-    //
-/*
-    QObject::connect(&m_Searcher, SIGNAL(beginOfSearch()),      this, SLOT  (onBeginSearch() ));
-    QObject::connect(&m_Searcher, SIGNAL(getTotalNodesAmount(uint)), this, SLOT (onGetTotalNodesAmount(unsigned int) ));
-    QObject::connect(&m_Searcher, SIGNAL(endOfSearch()),             this, SLOT (onEndSearch          ()    ));
-    QObject::connect(&m_Searcher, SIGNAL(jumpToNextNode()),          this, SLOT (onJumpNextNode       ()    ));
-    QObject::connect(&m_Searcher, SIGNAL(foundNode(TreeLeaf*,int)),  this, SLOT (onfoundNode(TreeLeaf*,int) ));
-*/
+    //QObject::connect(this->ui->m_checkSearchInAttach,       SIGNAL(stateChanged(int)),  this, SLOT (onClickSearchArray() ));
     //
     //process click to the selected item
     QObject::connect(this->ui->m_SearchResults, SIGNAL ( itemSelectionChanged () ), this, SLOT( onSearchTableClick() ) );
@@ -320,25 +292,19 @@ void TreeSearchDlg::onChangeRegExpState (int value)
         case Qt::Checked:
             this->ui->SearchLabel->setText(tr("Search pattern"));
             //
-//            this->ui->m_lblPatternSyntax->setVisible(true);
-//            this->ui->m_cmbPatternSyntax->setVisible(true);
-            //
             this->ui->m_checkCaseSensitive->setChecked(false);
-//            this->ui->m_checkCaseSensitive->setText(tr("Enable minimal match"));
+            this->ui->m_checkCaseSensitive->setEnabled(false);
             //
-            this->ui->m_checkWholeWords->setChecked(false);
-            this->ui->m_checkWholeWords->setEnabled(false);
+            //this->ui->m_checkWholeWords->setChecked(false);
+            //this->ui->m_checkWholeWords->setEnabled(false);
         break;
         case Qt::Unchecked:
-            this->ui->SearchLabel->setText(tr("Search"));
+            this->ui->SearchLabel->setText(tr("Search text:"));
             //
-//            this->ui->m_lblPatternSyntax->setVisible(false);
-//            this->ui->m_cmbPatternSyntax->setVisible(false);
-            //
-            this->ui->m_checkCaseSensitive->setText(tr("Case sensitive"));
+            this->ui->m_checkCaseSensitive->setEnabled(true);
             this->ui->m_checkCaseSensitive->setChecked(false);
             //
-            this->ui->m_checkWholeWords->setEnabled(true);
+            //this->ui->m_checkWholeWords->setEnabled(true);
         break;
     };
 }
@@ -349,82 +315,14 @@ void TreeSearchDlg::onClickSearchArray()
     QString str_search = this->ui->m_eSearchString->text();
     enableSearchButton(str_search);
 }
-/*
-void TreeSearchDlg::createSearchRequest (SearchRequest& request)
-{
-    request.setSearchPhrase(this->ui->m_eSearchString->text());
-    //------------------------------------------------------------------
-    //define timing
-    if (this->ui->m_checkBoxFrom->checkState() == Qt::Checked)
-    {
 
-        request.setBeginSearchDateTime(this->ui->m_dateTimeEdit_from->dateTime());
-    }else
-    {
-        request.dropBeginSearchDateTime();
-    };
-    //
-    if (this->ui->m_checkBoxTo->checkState() == Qt::Checked)
-    {
-         request.setEndSearchDateTime(this->ui->m_dateTimeEdit_to->dateTime());
-    }
-    else
-    {
-        request.dropEndSearchDateTime();
-    };
-    //
-    //define regexp as search condition
-    //
-    if (this->ui->m_checkRegExp->checkState() == Qt::Checked)
-    {
-        //
-        if (this->ui->m_checkCaseSensitive->checkState() == Qt::Checked)
-            request.setEnableMinMatching();
-        else
-            request.setEnableMinMatching(false);
-        //
-
-        QVariant qv_pattern = this->ui->m_cmbPatternSyntax->itemData ( this->ui->m_cmbPatternSyntax->currentIndex() );
-        QRegExp::PatternSyntax reg_pattern = (QRegExp::PatternSyntax)qv_pattern.toInt();
-        request.setRegExpSyntax(reg_pattern );
-    }else
-    {
-        request.dropRegularExp();
-        //
-        if (this->ui->m_checkCaseSensitive->checkState() == Qt::Checked)
-            request.setCaseSensitive();
-        else
-            request.setCaseSensitive(false);
-    };
-    //
-    if (this->ui->m_checkWholeWords->checkState() == Qt::Checked)
-        request.setWholeWord();
-    //
-    if (this->ui->m_checkCurrentTree->checkState() == Qt::Checked)
-        request.setCurrentTreeOnly();
-    //------------------------------------------------------------------
-    if (this->ui->m_checkSearchInNode->checkState() == Qt::Checked)
-        request.setSearchInNodeNames();
-    //
-    if (this->ui->m_checkSearchInDescriptor->checkState() == Qt::Checked)
-        request.setSearchInNodeDescriptor();
-    //
-    if (this->ui->m_checkSearchInANames->checkState() == Qt::Checked)
-        request.setSearchInAttachmentNames();
-    //
-    if (this->ui->m_checkSearchInAttach->checkState() == Qt::Checked)
-        request.setSearchInAtttachmentBody();
-    //------------------------------------------------------------------
-
-}
-*/
 bool TreeSearchDlg::isSearchArrayDefined()
 {
     if (
             (this->ui->m_checkSearchInNode->checkState() == Qt::Checked)        ||
             (this->ui->m_checkSearchInDescriptor->checkState() == Qt::Checked)  ||
-            (this->ui->m_checkSearchInANames->checkState() == Qt::Checked)      ||
-            (this->ui->m_checkSearchInAttach->checkState() == Qt::Checked)
+            (this->ui->m_checkSearchInANames->checkState() == Qt::Checked)      //||
+            //(this->ui->m_checkSearchInAttach->checkState() == Qt::Checked)
         )
     {
         return true;
@@ -449,14 +347,7 @@ void TreeSearchDlg::enableSearchButton  (const QString& str_search_string)
 //
 void TreeSearchDlg::onSearchButton()
 {
-//    if ( enSEARCH_MODE == m_enMode )
-//    {
-        startSearch ();
-//    }else
-//    {
-//        cancelSearch();
-//    };
-    //lock all comboboxes here
+    startSearch ();
 };
 
 QString TreeSearchDlg::generateTimeCondition (const QString& str_time_tbl_name )
@@ -515,19 +406,25 @@ QString TreeSearchDlg::generateNodeSQLRequest (bool b_search_in_node)
     //do not forget about this: if (this->ui->m_checkRegExp->checkState() == Qt::Checked)
     //
     // node name condition
-    if (this->ui->m_checkCaseSensitive->checkState() == Qt::Checked)
+    if (this->ui->m_checkRegExp->checkState() == Qt::Checked)
     {
-        str_match_condition  = "(";
-        str_match_condition  += str_search_field + " ";
-        str_match_condition  += "LIKE BINARY '%";
-        str_match_condition += this->ui->m_eSearchString->text();
-        str_match_condition += "%')";
-    }else{ //node_name LIKE '%швейц%';
-        str_match_condition  = "(";
-        str_match_condition  += str_search_field + " ";
-        str_match_condition  += "LIKE '%";
-        str_match_condition += this->ui->m_eSearchString->text();
-        str_match_condition += "%')";
+
+    }else  //non-regexp query
+    {
+        if (this->ui->m_checkCaseSensitive->checkState() == Qt::Checked)
+        {
+            str_match_condition  = "(";
+            str_match_condition  += str_search_field;
+            str_match_condition  += " LIKE BINARY '%";
+            str_match_condition += this->ui->m_eSearchString->text();
+            str_match_condition += "%')";
+        }else{ //node_name LIKE '%швейц%';
+            str_match_condition  = "(";
+            str_match_condition  += str_search_field;
+            str_match_condition  += " LIKE '%";
+            str_match_condition += this->ui->m_eSearchString->text();
+            str_match_condition += "%')";
+        };
     };
     //
     if (str_tree_condition.length() > 0)
@@ -761,30 +658,6 @@ bool TreeSearchDlg::makeUniversalSearch (SearchResArray& search_array, const QSt
     //
     return true;
 };
-/*
-void TreeSearchDlg::cancelSearch ()
-{
-    this->ui->m_bSearch->setEnabled(false);
-    m_Searcher.cancelSearch();
-};
-*/
-//
-//need to switch it on the signal from thread!!!
-//
-/*
-void TreeSearchDlg::swapDlgMode ()
-{
-    if (enSEARCH_MODE == m_enMode)
-    {
-        m_enMode = enCANCEL_MODE;
-        this->ui->m_bSearch->setText(tr("Stop search"));
-    }else
-    {
-        m_enMode = enSEARCH_MODE;
-        this->ui->m_bSearch->setText(tr("Begin search"));
-    };
-};
-*/
 
 void TreeSearchDlg::onChangeSearchString(QString str_search)
 {
@@ -802,42 +675,7 @@ void TreeSearchDlg::onClearButton()
     //
     this->ui->m_SearchResults->setRowCount(0);
 }
-//---------------------- thread feedback
 /*
-void TreeSearchDlg::onBeginSearch ()
-{
-    this->ui->m_bSearch->setEnabled(true);
-    lockInterface(true);
-    //swapDlgMode();
-}
-*/
-/*
-void TreeSearchDlg::onJumpNextNode()
-{
-    this->ui->m_progressBar->setValue( this->ui->m_progressBar->value() + 1);
-}
-*/
-/*
-void TreeSearchDlg::onGetTotalNodesAmount(unsigned int ui_amount)
-{
-    //set progressbar params
-    //this->ui->m_progressBar->setVisible(true);
-    //
-    this->ui->m_progressBar->setMinimum(0);
-    this->ui->m_progressBar->setMaximum(ui_amount);
-    this->ui->m_progressBar->setValue(0);
-    this->ui->m_progressBar->setFormat("%v");
-};
-*/
-/*
-void TreeSearchDlg::onEndSearch()
-{
-    this->ui->m_bSearch->setEnabled(true);
-    lockInterface(false);
-    //swapDlgMode();
-    //this->ui->m_progressBar->setVisible(false);
-};
-*/
 void TreeSearchDlg::lockInterface (bool b_lock )
 {
     this->ui->m_eSearchString->setEnabled(!b_lock);
@@ -863,119 +701,8 @@ void TreeSearchDlg::lockInterface (bool b_lock )
     //this->ui->m_progressBar->setVisible(b_lock);
 
 };
-/*
-void TreeSearchDlg::onfoundNode (TreeLeaf* ptr_node,int i_location)
-{
-    //analyse the search result table
-    TreeLeaf* ptr_tbl_node = NULL;
-    int i_target_row = -1;
-    //
-    for  (int i = 0; i < this->ui->m_SearchResults->rowCount(); ++i)
-    {
-        QTableWidgetItem* ptr_cell = this->ui->m_SearchResults->item(i, m_uiNodeColNum);
-        //
-        ptr_tbl_node = getLinkedLeaf(ptr_cell);
-        //
-        Q_ASSERT (ptr_tbl_node);
-        //
-        if ( ptr_tbl_node->getID() == ptr_node->getID() )
-        {
-            i_target_row = i;
-            break;
-        };
-    };
-    //
-    QTableWidgetItem* ptr_location_cell = NULL;
-    //
-    if (-1 == i_target_row)
-    {
-        //create the table entries
-        //get the tree name
-        QString str_tree_name = getTreeNameByTreeID( ptr_node->getTreeID() );
-        //
-        QString str_node_name = ptr_node->text(0);
-        //create tree cell
-        QTableWidgetItem*   ptr_tree_cell   = new  QTableWidgetItem( str_tree_name );
-        ptr_tree_cell->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-        //create node_ cell
-        QTableWidgetItem*   ptr_node_cell   = new  QTableWidgetItem( str_node_name );
-        ptr_node_cell->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-        //
-        QVariant v_node = VariantPtr<TreeLeaf>::asQVariant( ptr_node );
-        ptr_node_cell->setData(1,v_node);
-        //create location cell
-        ptr_location_cell = new  QTableWidgetItem(" ");
-        ptr_location_cell->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-        //ptr_location_cell->setFlags( Qt::ItemIsEnabled |Qt::ItemIsSelectable );
-        //this->ui->m_SearchResults->rowCount()
-        this->ui->m_SearchResults->setRowCount(this->ui->m_SearchResults->rowCount() + 1);
-        //
-        this->ui->m_SearchResults->setItem(this->ui->m_SearchResults->rowCount()-1, m_uiTreeColNum, ptr_tree_cell);
-        this->ui->m_SearchResults->setItem(this->ui->m_SearchResults->rowCount()-1, m_uiNodeColNum, ptr_node_cell);
-        this->ui->m_SearchResults->setItem(this->ui->m_SearchResults->rowCount()-1, m_uiLocationColNum, ptr_location_cell);
-    }else
-    {
-        ptr_location_cell = this->ui->m_SearchResults->item(i_target_row, m_uiLocationColNum);
-    };
-    //Add new index to the location cell
-    QString str_location_text = ptr_location_cell->text();
-    //
-    addIndexToLocation(str_location_text, i_location);
-    ptr_location_cell->setText(str_location_text);
-    ptr_location_cell->setToolTip(tr("N - node name, D - node descriptor, A - attachment name, B - body of attachment"));
-    //
-    return;
-};
 */
-/*
-void TreeSearchDlg::addIndexToLocation  (QString& str_location, int i_location)
-{
-    if (enNODE_NAMES == i_location)
-    {
-        if (str_location.contains(tr("N")) == false)
-            str_location += tr("N");
-    }else if(enNODE_DESCRIPTOR == i_location)
-    {
-        if (str_location.contains(tr("D")) == false)
-            str_location += tr("D");
-    }else if(enATT_NAMES == i_location)
-    {
-        if (str_location.contains(tr("A")) == false)
-            str_location += tr("A");
-    }else if(enATT_BODY == i_location)
-    {
-        if (str_location.contains(tr("B")) == false)
-            str_location += tr("B");
-    };
-};
-*/
-/*
-QString TreeSearchDlg::getTreeNameByTreeID(int i_tree_id)
-{
-    for (int i = 0; i < m_ptrCombo->count(); i++ )
-    {
-        QVariant root_data = m_ptrCombo->itemData(i);
-        RootOfTree* ptr_root = VariantPtr<RootOfTree>::asPtr( root_data );
-        Q_ASSERT (ptr_root);
-        //
-        if (ptr_root->getID() == i_tree_id)
-            return ptr_root->getName();
-    };
 
-    return tr("");
-
-};
-*/
-/*
-TreeLeaf*  TreeSearchDlg::getLinkedLeaf (QTableWidgetItem* ptr_cell)
-{
-    QVariant ptr_linked_leaf = ptr_cell->data(1);
-    TreeLeaf* ptr_node = VariantPtr<TreeLeaf>::asPtr( ptr_linked_leaf );
-    Q_ASSERT ( ptr_node );
-    //
-    return ptr_node;
-};
-*/
 void TreeSearchDlg::clearSearchResults()
 {
     this->ui->m_SearchResults->setRowCount(0);
@@ -1021,60 +748,9 @@ void TreeSearchDlg::onSearchTableClick()
     {
         return;
     };
-/*
-    while (i_current_search_node_id != 0)
-    {
-         TreeLeaf* ptr_child_node = ptr_actual_top_leaf->getChildNode(i_current_search_node_id);
-         //
-         if (NULL != ptr_child_node)
-         {
-            m_ptrTree->setCurrentItem(ptr_child_node);
-            break;
-         };
-         //if we do not found this node - add this node to the stack
-         search_stack.push(i_current_search_node_id);
-         //search parent_id for the actual node
-    };
-*/
+    //
     getAnExpandTargetNode(search_stack, ptr_actual_top_leaf);
-    //QString str_text = ptr_actual_top_leaf->text(0);
     //
-    //now search the node, up and up
-    //RootOfTree tree_root = m_ptrTree->getRootByTreeId(i_tree_id);
-    //TreeLeaf* ptr_actual_top_leaf = (TreeLeaf*) this->topLevelItem(0);
-    /*
-    std::stack<int> stack_sample;
-    stack_sample.push(5);
-    stack_sample.push(4);
-    stack_sample.push(3);
-    stack_sample.push(2);
-    stack_sample.push(1);
-    stack_sample.push(0);
-    //
-    while (!stack_sample.empty())
-    {
-       int i_value = stack_sample.top();
-       stack_sample.pop();
-    };
-*/
-    //
-    //m_ptrTree->setCurrentItem(ptr_leaf);
-    //
-
-/*
-    QTableWidgetItem* ptr_current_table_cell = selection_list.at(0);
-    //
-    int i_row = ptr_current_table_cell->row();
-    //
-    ptr_current_table_cell = this->ui->m_SearchResults->item(i_row, m_uiNodeColNum);
-    //
-    TreeLeaf* ptr_leaf = getLinkedLeaf(ptr_current_table_cell);
-    //
-    switchToTheTree( ptr_leaf->getTreeID() );
-    //
-    m_ptrTree->setCurrentItem(ptr_leaf);
-    //
-*/
     return;
 };
 

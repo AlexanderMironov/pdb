@@ -27,6 +27,8 @@
 //
 #include <QDesktopServices>
 #include  <QHeaderView>
+#include  <QFileDialog>
+#include  <QMessageBox>
 //
 
 MyTable::MyTable(QWidget *parent) :
@@ -56,12 +58,12 @@ MyTable::MyTable(QWidget *parent) :
     this->setColumnWidth(ITEM_SIZE,     100);
     this->setColumnWidth(ITEM_STATUS,   60);
     //
-    header->setResizeMode(ITEM_LOCKED,      QHeaderView::Fixed);
-    header->setResizeMode(ITEM_ENCRYPTED,   QHeaderView::Fixed);
-    header->setResizeMode(ITEM_NAME,        QHeaderView::Stretch);
-    header->setResizeMode(ITEM_DATA,        QHeaderView::Fixed);
-    header->setResizeMode(ITEM_SIZE,        QHeaderView::Fixed);
-    header->setResizeMode(ITEM_STATUS,      QHeaderView::Fixed);
+    header->setSectionResizeMode(ITEM_LOCKED,      QHeaderView::Fixed);
+    header->setSectionResizeMode(ITEM_ENCRYPTED,   QHeaderView::Fixed);
+    header->setSectionResizeMode(ITEM_NAME,        QHeaderView::Stretch);
+    header->setSectionResizeMode(ITEM_DATA,        QHeaderView::Fixed);
+    header->setSectionResizeMode(ITEM_SIZE,        QHeaderView::Fixed);
+    header->setSectionResizeMode(ITEM_STATUS,      QHeaderView::Fixed);
     //
     QSettings settings( g_strCOMPANY, g_str_CNF_APP_NAME );
     int i_attach_icon_size  =  settings.value(g_str_ATTACH_ICONS_SIZE).value<int>();

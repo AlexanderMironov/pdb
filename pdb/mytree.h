@@ -35,6 +35,7 @@
 //#include <vector>
 
 class RootOfTree;
+class QStatusBar;
 
 class MyTree : public QTreeWidget
 {

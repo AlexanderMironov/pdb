@@ -73,6 +73,9 @@ signals:
 public slots:
 
 public:
+    //
+    //get all child leafs from the database
+    //
     bool                    extractAndFillChildList     ();
     ChildList               getChildList                ();
     TreeLeaf*               getChildNode                (int i_node_id);

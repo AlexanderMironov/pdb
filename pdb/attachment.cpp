@@ -64,7 +64,7 @@ Attachment::Attachment(const QString&      full_path_filename,
     else
     {
         setObjectStatus(OBJECT_NOT_DEFINED);
-        Q_ASSERT (FALSE);
+        Q_ASSERT (false);
     }
 }
 //
@@ -113,7 +113,7 @@ Attachment::Attachment ( TreeLeaf*          ptr_parent_node,
 {
     if (NULL == ptr_parent_node)
     {
-        Q_ASSERT(FALSE);
+        Q_ASSERT(false);
         return;
     };
     //

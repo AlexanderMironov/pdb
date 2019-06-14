@@ -288,7 +288,7 @@ void MyEditor::onAddRow ()
     QTextTableCell cell = ptr_tbl->cellAt(cursor);
     int cell_rowcursor_is = cell.row(); /* int value start from zero */
     //
-    int approwtot = QInputDialog::getInteger(0, tr("Append NR. line row"),tr("Row:"), 1, 1, 100, 1, &ok);
+    int approwtot = QInputDialog::getInt(0, tr("Append NR. line row"),tr("Row:"), 1, 1, 100, 1, &ok);
     //
     ptr_tbl->insertRows(cell_rowcursor_is+1, approwtot);
 }
@@ -304,7 +304,7 @@ void MyEditor::onAddColumn ()
     QTextTableCell cell = ptr_tbl->cellAt(cursor);
     int cell_colcursor_is = cell.column(); /* int value start from zero */
     //
-    int approwtot = QInputDialog::getInteger(0, tr("Append NR. col row"),tr("Col:"), 1, 1, 100, 1, &ok);
+    int approwtot = QInputDialog::getInt(0, tr("Append NR. col row"),tr("Col:"), 1, 1, 100, 1, &ok);
     //
     ptr_tbl->insertColumns(cell_colcursor_is+1, approwtot);
 }

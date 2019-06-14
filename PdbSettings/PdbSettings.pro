@@ -5,13 +5,20 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += widgets
 QT       += sql
 QT       += xml
 
 CONFIG 	 += plugin
 CONFIG 	 += crypto
-
-LIBS	 += -lqca
+CONFIG += static
+#/usr/lib/x86_64-linux-gnu/
+#/usr/lib/x86_64-linux-gnu/
+#/home/alex/Downloads/qca-master/lib/      libqca-qt5.so
+#LIBS	 +=  -L/home/alex/Downloads/qca-master/lib/  -lqca-qt5
+#LIBS	 +=  -L/home/alex/Downloads/qca-master/lib/qca/crypto -lqca-ossl
+LIBS	 += -lqca-qt5
+#LIBS	 += -lqca
 
 TARGET = PdbSettings
 TEMPLATE = app
